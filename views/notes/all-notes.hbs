@@ -1,0 +1,16 @@
+{{!--aca se pasan las notas--}}
+
+<div class="row">
+    {{#each notes}}
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        {{title}} {{!--este es el titulo del note que estoy metiendo--}}
+                    </h4>
+                    <p>{{description}}</p>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
