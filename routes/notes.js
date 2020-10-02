@@ -6,14 +6,14 @@ const Note = require('../models/Note.js');
 //gracias a este Note le puedo decir a mi programa
 //si quiero un nuevo dato, si lo quiero actualizar, eliminar,etc
 
-
+//este es para hacer un formulario para crear la nota
 router.get('/notes/add', (req, res) => {
     res.render('notes/new-note');
 });
 
 //ruta para recibir datos
 router.post('/notes/new-note', async (req, res) => {//el async para indicar que es asíncrono
-    const { title, description } = req.body;//aca se reciben los datos
+    const { title, description } = req.body;//aca se reciben los datos y se mandan a la base de datos
     const errors = [];
     if (!title) {
         errors.push({ text: 'please introduce the title' });
@@ -37,12 +37,31 @@ router.post('/notes/new-note', async (req, res) => {//el async para indicar que 
     //con el método save se guarda la info obtenida del usuario
 })
 
-router.get('/notes', async (req, res) => {
-    const notes = await Note.find().sort({date: 'desc'});//para mostrar todos los datos, puedo ser mas descriptivo
+
+//aca se consulta la base de datos database - esto es lo de fazt, pero no da, hay otra opción, la pongo abajo
+/*router.get('/notes', async (req, res) => {
+    const notes = await Note.find().//sort({date: 'desc'});//para mostrar todos los datos, puedo ser mas descriptivo
     //poniendo dentro del find por ejemplo que aparezcan solo los que tienen título tal (consulta de base de datos)
     res.render('notes/all-notes.hbs', {notes}) // aca voy a retornar los datos a una vista
 //la vista all-notes va a empezar a listar todas las notas que tengamos de la base de datos
 //con {notes} se van pasando las notas
-});
+});*/
+
+//opción 2
+router.get('/notes', async (req, res) => {
+    await Note.find()
+      .then(documentos => {
+        const contexto = {
+            notes: documentos.map(documento => {
+            return {
+                title: documento.title,
+                description: documento.description
+            }
+          })
+        }
+        res.render('notes/all-notes', {
+ notes: contexto.notes }) 
+      })
+  })
 
 module.exports = router;

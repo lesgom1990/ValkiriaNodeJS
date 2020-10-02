@@ -10,10 +10,10 @@
 {{/each}}
 
 
-<div class="col-md-4 mx-auto">
+<div class="col-md-4 mx-auto"> {{!este div se encarga de centrar la tarjeta}}
     <div class="card">
-        <div class="cardheader">
-            <h1>New note</h1>
+        <div class="card-header">
+            <h3>New note</h3>
         </div>
         <div class='card-body'>
             <form action="/notes/new-note" method="POST"> {{!aca recibe datos del usuario}}
