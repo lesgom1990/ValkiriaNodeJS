@@ -54,6 +54,7 @@ router.get('/notes', async (req, res) => {
         const contexto = {
             notes: documentos.map(documento => {
             return {
+                id: documento._id,
                 title: documento.title,
                 description: documento.description
             }
@@ -63,5 +64,10 @@ router.get('/notes', async (req, res) => {
  notes: contexto.notes }) 
       })
   })
+
+  //vamos a crear una ruta para editar las notas
+  router.get('/notes/edit/:id', (req, res)=>{
+res.render('notes/edit-note.hbs')
+  });
 
 module.exports = router;
