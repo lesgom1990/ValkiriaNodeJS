@@ -50,24 +50,36 @@ router.post('/notes/new-note', async (req, res) => {//el async para indicar que 
 //opción 2
 router.get('/notes', async (req, res) => {
     await Note.find()
-      .then(documentos => {
-        const contexto = {
-            notes: documentos.map(documento => {
-            return {
-                id: documento._id,
-                title: documento.title,
-                description: documento.description
+        .then(documentos => {
+            const contexto = {
+                notes: documentos.map(documento => {
+                    return {
+                        _id: documento._id,
+                        title: documento.title,
+                        description: documento.description
+                    }
+                })
             }
-          })
-        }
-        res.render('notes/all-notes', {
- notes: contexto.notes }) 
-      })
-  })
+            res.render('notes/all-notes', {
+                notes: contexto.notes
+            })
+        })
+})
 
-  //vamos a crear una ruta para editar las notas
-  router.get('/notes/edit/:id', (req, res)=>{
-res.render('notes/edit-note.hbs')
-  });
+//vamos a crear una ruta para editar las notas
+router.get('/notes/edit/:id', async (req, res) => {
+    const note = await Note.findById(req.params.id).lean() //aca estoy pasando el id que me envió el usuario
+    res.render('notes/edit-note', { note });
+});
+
+//para el put:
+
+router.put('/notes/edit-note/:id', async (req, res) => {
+    const { title, description } = req.body //desde el req.body se recibe
+    await Note.findByIdAndUpdate(req.params.id, { title, description }).lean(); //con esto se actualiza
+    res.redirect('/notes');
+});
 
 module.exports = router;
+
+//If using mongoose, this issue can be solved by using .lean() to get a json object (instead of a mongoose one)

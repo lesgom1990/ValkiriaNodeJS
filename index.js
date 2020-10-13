@@ -19,7 +19,8 @@ app.set('view engine', '.hbs')//esto es para configurar el motor de plantillas
 
 //MIDDLEWARES
 app.use(express.urlencoded({extended: false})); //es para entender los formularios que me llegan. Se pone extended false porque no quiero aceptar imagenes por ejemplo
-app.use(methodOverride('method')); //sirve para que los formularios puedan enviar otros métodos como put y delete
+app.use(methodOverride('_method')); //sirve para que los formularios puedan enviar otros métodos como put y delete
+//aca se mete la info del PUT del edit-note. 
 app.use(session({
    secret: 'mysecret',
    resave: true, //estandar
